@@ -3,7 +3,7 @@ import yupToOpenapi from '@rudi23/yup-to-openapi';
 import type YupRouter from '@rudi23/koa-yup-router';
 import type { RouteSpecification, InputType, ValidationSchema } from '@rudi23/koa-yup-router';
 import type { OperationObject, ParameterLocation, ParameterObject, PathsObject, OpenAPIObject } from 'openapi3-ts';
-import type { Config } from '@src/types';
+import type { Config } from './types';
 
 const defaultConfig: Config = {
     headRoutes: false,
