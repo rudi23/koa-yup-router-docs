@@ -81,6 +81,9 @@ function createOperationObject(specs: RouteSpecification): OperationObject {
     if (specs.meta?.swagger?.description) {
         schema.description = specs.meta?.swagger?.description;
     }
+    if (specs.meta?.swagger?.deprecated) {
+        schema.deprecated = specs.meta?.swagger?.deprecated;
+    }
     if (specs.meta?.swagger?.tags) {
         schema.tags = specs.meta?.swagger?.tags;
     }
