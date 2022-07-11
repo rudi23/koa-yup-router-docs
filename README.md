@@ -19,9 +19,10 @@ Install using [`npm`][npm-url]:
 npm install @rudi23/koa-yup-router-docs
 ```
 
-NodeJS `>= 8.0.0.` is required.
+NodeJS `>= 12.0.0.` is required.
 
 ### Example
+
 ```js
 import * as yup from 'yup';
 import YupRouter from '@rudi23/koa-yup-router';
