@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/rudi23/koa-yup-router-docs/compare/v2.0.0...v2.0.1) (2022-07-11)
+
+### Miscellaneous Chores
+
+-   update @rudi23/koa-yup-router to 2.0.1 ([c670f96](https://github.com/rudi23/koa-yup-router-docs/commit/c670f96d7bdf825be7da859e6d4a4eede6409412))
+
 ## [2.0.0](https://github.com/rudi23/koa-yup-router-docs/compare/v1.1.0...v2.0.0) (2022-07-11)
 
 ### Features
