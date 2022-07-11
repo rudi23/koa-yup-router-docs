@@ -46,7 +46,7 @@
     "*.{json,md}": "prettier --write"
   },
   "dependencies": {
-    "@rudi23/koa-yup-router": "2.0.1",
+    "@rudi23/koa-yup-router": "^2.0.0",
     "@rudi23/yup-to-openapi": "2.0.0",
     "openapi3-ts": "2.0.2"
   },
