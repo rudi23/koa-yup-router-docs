@@ -13,6 +13,33 @@ function createSampleRouter(): YupRouter {
         handler: () => {},
     });
     router.addRoute({
+        method: 'get',
+        path: '/list',
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        handler: () => {},
+        validate: {
+            output: {
+                201: {
+                    description: 'Created OK',
+                    body: {
+                        'application/json': yup.object({
+                            id: yup.number().required(),
+                        }),
+                    },
+                },
+                400: {
+                    description: 'Bad request',
+                    headers: {
+                        'X-Rate-Limit-Limit': {
+                            schema: yup.number().required(),
+                            description: 'The number of allowed requests in the current period',
+                        },
+                    },
+                },
+            },
+        },
+    });
+    router.addRoute({
         method: ['post', 'put'],
         path: '/path/:id',
         validate: {
@@ -57,6 +84,47 @@ describe('koa-yup-router-docs', () => {
     it('should create paths openapi schema object', () => {
         const router = createSampleRouter();
         const output: PathsObject = {
+            '/list': {
+                'get': {
+                    'responses': {
+                        '200': {
+                            'description': 'OK',
+                        },
+                        '201': {
+                            'content': {
+                                'application/json': {
+                                    'schema': {
+                                        'properties': {
+                                            'id': {
+                                                'format': 'float',
+                                                'type': 'number',
+                                            },
+                                        },
+                                        'required': ['id'],
+                                        'type': 'object',
+                                    },
+                                },
+                            },
+                            'description': 'Created OK',
+                        },
+                        '400': {
+                            'description': 'Bad request',
+                            'headers': {
+                                'X-Rate-Limit-Limit': {
+                                    'description': 'The number of allowed requests in the current period',
+                                    'schema': {
+                                        'format': 'float',
+                                        'type': 'number',
+                                    },
+                                },
+                            },
+                        },
+                        '500': {
+                            'description': 'Internal Server Error',
+                        },
+                    },
+                },
+            },
             '/path/{id}': {
                 'delete': {
                     'parameters': [
@@ -239,6 +307,47 @@ describe('koa-yup-router-docs', () => {
             },
             'openapi': '3.0.1',
             'paths': {
+                '/list': {
+                    'get': {
+                        'responses': {
+                            '200': {
+                                'description': 'OK',
+                            },
+                            '201': {
+                                'content': {
+                                    'application/json': {
+                                        'schema': {
+                                            'properties': {
+                                                'id': {
+                                                    'format': 'float',
+                                                    'type': 'number',
+                                                },
+                                            },
+                                            'required': ['id'],
+                                            'type': 'object',
+                                        },
+                                    },
+                                },
+                                'description': 'Created OK',
+                            },
+                            '400': {
+                                'description': 'Bad request',
+                                'headers': {
+                                    'X-Rate-Limit-Limit': {
+                                        'description': 'The number of allowed requests in the current period',
+                                        'schema': {
+                                            'format': 'float',
+                                            'type': 'number',
+                                        },
+                                    },
+                                },
+                            },
+                            '500': {
+                                'description': 'Internal Server Error',
+                            },
+                        },
+                    },
+                },
                 '/path/{id}': {
                     'delete': {
                         'parameters': [

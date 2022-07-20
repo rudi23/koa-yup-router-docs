@@ -1,12 +1,34 @@
 import { isSchemaObject } from 'openapi3-ts';
+import { isSchema } from 'yup';
 import yupToOpenapi from '@rudi23/yup-to-openapi';
 import type YupRouter from '@rudi23/koa-yup-router';
 import type { RouteSpecification, InputType, ValidationSchema } from '@rudi23/koa-yup-router';
-import type { OperationObject, ParameterLocation, ParameterObject, PathsObject, OpenAPIObject } from 'openapi3-ts';
+import type {
+    OperationObject,
+    ParameterLocation,
+    ParameterObject,
+    PathsObject,
+    OpenAPIObject,
+    ContentObject,
+    HeadersObject,
+    ResponsesObject,
+} from 'openapi3-ts';
+import type { OutputSchema } from '@rudi23/koa-yup-router/@type/types/index.js';
 import type { Config } from './types';
 
 const defaultConfig: Config = {
     headRoutes: false,
+    defaultResponses: {
+        200: {
+            description: 'OK',
+        },
+        400: {
+            description: 'Bad request',
+        },
+        500: {
+            description: 'Internal Server Error',
+        },
+    },
 };
 
 function getParameters(yupSchema: ValidationSchema, inPath: ParameterLocation): ParameterObject[] {
@@ -56,10 +78,104 @@ function getMediaType(input: InputType | undefined): string {
     }
 }
 
-function createOperationObject(specs: RouteSpecification): OperationObject {
+function getResponseContent(outputBodySchema: OutputSchema['body']): ContentObject | undefined {
+    if (!outputBodySchema) {
+        return undefined;
+    }
+
+    if (isSchema(outputBodySchema)) {
+        return {
+            'application/json': {
+                schema: yupToOpenapi(outputBodySchema),
+            },
+        };
+    }
+
+    return Object.entries(outputBodySchema).reduce((aggSchema, [contentType, schema]) => {
+        if (isSchema(schema)) {
+            return {
+                ...aggSchema,
+                [contentType]: { schema: yupToOpenapi(schema) },
+            };
+        }
+
+        return aggSchema;
+    }, {} as ContentObject);
+}
+
+function getResponseHeaders(outputHeadersSchema: OutputSchema['headers']): HeadersObject | undefined {
+    if (!outputHeadersSchema) {
+        return undefined;
+    }
+
+    return Object.entries(outputHeadersSchema).reduce((aggSchema, [contentType, schema]) => {
+        if (isSchema(schema.schema)) {
+            return {
+                ...aggSchema,
+                [contentType]: { schema: yupToOpenapi(schema.schema), description: schema.description },
+            };
+        }
+
+        return aggSchema;
+    }, {} as HeadersObject);
+}
+
+function getResponse(specs: RouteSpecification, config: Config): ResponsesObject {
+    if (specs.meta?.swagger?.response) {
+        return specs.meta.swagger.response as ResponsesObject;
+    }
+
+    if (specs.validate.output) {
+        const responses = { ...config.defaultResponses };
+        Object.keys(specs.validate.output).forEach((codes) => {
+            // 200,206,300
+            const respCodes = codes.toString().split(',');
+            respCodes.forEach((unformattedCode) => {
+                // 200-299
+                const code = (unformattedCode.includes('-') ? unformattedCode.split('-')[0] : unformattedCode).trim();
+
+                const spec = specs.validate.output?.[codes];
+                if (!spec) {
+                    return;
+                }
+
+                const { body, headers, description } = spec;
+                const responseDescription = description || config.defaultResponses?.[code]?.description;
+                const responseContent = getResponseContent(body);
+                const responseHeaders = getResponseHeaders(headers);
+
+                if (config.defaultResponses[code]) {
+                    responses[code] = config.defaultResponses[code];
+                }
+                if (!responses[code]) {
+                    responses[code] = {};
+                }
+                if (responseDescription) {
+                    responses[code].description = responseDescription;
+                }
+                if (responseContent) {
+                    responses[code].content = responseContent;
+                }
+                if (responseHeaders) {
+                    responses[code].headers = responseHeaders;
+                }
+            });
+        });
+
+        return responses;
+    }
+
+    return {};
+}
+
+function createOperationObject(specs: RouteSpecification, config: Config): OperationObject {
     const schema: OperationObject = {
-        responses: specs.meta?.swagger?.respose || {},
+        responses: {},
     };
+
+    if (specs.validate.output) {
+        schema.responses = getResponse(specs, config);
+    }
 
     let parameters: ParameterObject[] = [];
     if (specs.validate.params) {
@@ -108,7 +224,7 @@ function processRoute(route: YupRouter, config: Config): PathsObject {
     return route.routeSpecs.reduce((aggPs, specs, index) => {
         const layer = route.router.stack[index];
         const path = layer.path.replace(/:(\w+)/g, '{$1}');
-        const schema = createOperationObject(specs);
+        const schema = createOperationObject(specs, config);
 
         layer.methods
             .map((m) => m.toLowerCase())

@@ -52,6 +52,29 @@ router.addRoute({
         headers: yup.object({
             custom: yup.string(),
         }),
+        output: {
+            200: {
+                description: 'Success OK',
+                body: yup.string().required(),
+            },
+            201: {
+                description: 'Created OK',
+                body: {
+                    'application/json': yup.object({
+                        id: yup.number().required(),
+                    }),
+                },
+            },
+            400: {
+                description: 'Bad request',
+                headers: {
+                    'X-Rate-Limit-Limit': {
+                        schema: yup.number().required(),
+                        description: 'The number of allowed requests in the current period',
+                    },
+                },
+            },
+        },
     },
     handler: () => {},
 });
