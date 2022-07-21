@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import YupRouter from '@rudi23/koa-yup-router';
 import type { OpenAPIObject, PathsObject } from 'openapi3-ts';
-import createDocument, { createPaths } from '@src/index';
+import createDocument, { createPaths } from '../src/index.js';
 
 function createSampleRouter(): YupRouter {
     const router = new YupRouter();
