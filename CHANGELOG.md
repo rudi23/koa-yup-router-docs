@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.0...v2.2.1) (2022-07-21)
+
+### Miscellaneous Chores
+
+-   update @rudi23/yup-to-openapi package ([8e66111](https://github.com/rudi23/koa-yup-router-docs/commit/8e66111391792091e446a6a67976bcc15219c216))
+
 ## [2.2.0](https://github.com/rudi23/koa-yup-router-docs/compare/v2.1.0...v2.2.0) (2022-07-21)
 
 ### Features
