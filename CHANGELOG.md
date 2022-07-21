@@ -1,3 +1,13 @@
+## [2.2.0](https://github.com/rudi23/koa-yup-router-docs/compare/v2.1.0...v2.2.0) (2022-07-21)
+
+### Features
+
+-   move to esm with build supporting commonjs ([#19](https://github.com/rudi23/koa-yup-router-docs/issues/19)) ([fbb8821](https://github.com/rudi23/koa-yup-router-docs/commit/fbb88212c864933c218736747ba435037e03a2af))
+
+### Miscellaneous Chores
+
+-   update @rudi23/yup-to-openapi package ([4161d0e](https://github.com/rudi23/koa-yup-router-docs/commit/4161d0ed16031b24bcaf6fea963085011a964c33))
+
 ## [2.1.0](https://github.com/rudi23/koa-yup-router-docs/compare/v2.0.1...v2.1.0) (2022-07-20)
 
 ### Features
