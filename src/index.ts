@@ -14,7 +14,7 @@ import type {
     ResponsesObject,
 } from 'openapi3-ts';
 import type { OutputSchema } from '@rudi23/koa-yup-router/@type/types/index.js';
-import type { Config } from './types';
+import type { Config } from './types/index.js';
 
 const defaultConfig: Config = {
     headRoutes: false,
@@ -241,7 +241,7 @@ function processRoute(route: YupRouter, config: Config): PathsObject {
     }, {} as PathsObject);
 }
 
-export function createPaths(router: YupRouter | YupRouter[], config: Partial<Config> = {}): PathsObject {
+function createPaths(router: YupRouter | YupRouter[], config: Partial<Config> = {}): PathsObject {
     const mergedConfig = { ...config, ...defaultConfig };
     const routes = !Array.isArray(router) ? [router] : router;
 
@@ -254,7 +254,7 @@ export function createPaths(router: YupRouter | YupRouter[], config: Partial<Con
     );
 }
 
-export default function createDocument(
+function createDocument(
     router: YupRouter | YupRouter[],
     initialDoc: OpenAPIObject,
     config: Partial<Config> = {}
@@ -267,5 +267,7 @@ export default function createDocument(
     };
 }
 
-export * from './types';
+export default createDocument;
+export { createDocument, createPaths };
+export * from './types/index.js';
 export * from 'openapi3-ts';
