@@ -1,3 +1,4 @@
+import merge from 'lodash.merge';
 import { isSchemaObject } from 'openapi3-ts';
 import { isSchema } from 'yup';
 import yupToOpenapi from '@rudi23/yup-to-openapi';
@@ -11,6 +12,7 @@ import type {
     OpenAPIObject,
     ContentObject,
     HeadersObject,
+    ResponseObject,
     ResponsesObject,
 } from 'openapi3-ts';
 import type { OutputSchema } from '@rudi23/koa-yup-router/@type/types/index.js';
@@ -79,7 +81,7 @@ function getMediaType(input: InputType | undefined): string {
 }
 
 function getResponseContent(outputBodySchema: OutputSchema['body']): ContentObject | undefined {
-    if (!outputBodySchema) {
+    if (!outputBodySchema || Object.keys(outputBodySchema).length === 0) {
         return undefined;
     }
 
@@ -104,7 +106,7 @@ function getResponseContent(outputBodySchema: OutputSchema['body']): ContentObje
 }
 
 function getResponseHeaders(outputHeadersSchema: OutputSchema['headers']): HeadersObject | undefined {
-    if (!outputHeadersSchema) {
+    if (!outputHeadersSchema || Object.keys(outputHeadersSchema).length === 0) {
         return undefined;
     }
 
@@ -120,46 +122,36 @@ function getResponseHeaders(outputHeadersSchema: OutputSchema['headers']): Heade
     }, {} as HeadersObject);
 }
 
-function getResponse(specs: RouteSpecification, config: Config): ResponsesObject {
+function getResponses(specs: RouteSpecification, config: Config): ResponsesObject {
     if (specs.meta?.swagger?.response) {
         return specs.meta.swagger.response as ResponsesObject;
     }
 
-    if (specs.validate.output) {
-        const responses = { ...config.defaultResponses };
-        Object.keys(specs.validate.output).forEach((codes) => {
-            // 200,206,300
-            const respCodes = codes.toString().split(',');
-            respCodes.forEach((unformattedCode) => {
-                // 200-299
-                const code = (unformattedCode.includes('-') ? unformattedCode.split('-')[0] : unformattedCode).trim();
+    const responsesSpec = merge({}, config.defaultResponses, specs.validate.output);
+    if (responsesSpec) {
+        const responses = {} as ResponsesObject;
+        Object.entries(responsesSpec).forEach(([code, responseSpec]) => {
+            if (!responseSpec || Object.keys(responseSpec).length === 0) {
+                return;
+            }
 
-                const spec = specs.validate.output?.[codes];
-                if (!spec) {
-                    return;
-                }
+            const { body, headers, description } = responseSpec;
 
-                const { body, headers, description } = spec;
-                const responseDescription = description || config.defaultResponses?.[code]?.description;
-                const responseContent = getResponseContent(body);
-                const responseHeaders = getResponseHeaders(headers);
+            const response = {} as ResponseObject;
+            const responseDescription = description;
+            if (responseDescription) {
+                response.description = responseDescription;
+            }
+            const responseContent = getResponseContent(body);
+            if (responseContent) {
+                response.content = responseContent;
+            }
+            const responseHeaders = getResponseHeaders(headers);
+            if (responseHeaders) {
+                response.headers = responseHeaders;
+            }
 
-                if (config.defaultResponses[code]) {
-                    responses[code] = config.defaultResponses[code];
-                }
-                if (!responses[code]) {
-                    responses[code] = {};
-                }
-                if (responseDescription) {
-                    responses[code].description = responseDescription;
-                }
-                if (responseContent) {
-                    responses[code].content = responseContent;
-                }
-                if (responseHeaders) {
-                    responses[code].headers = responseHeaders;
-                }
-            });
+            responses[code] = response;
         });
 
         return responses;
@@ -173,9 +165,7 @@ function createOperationObject(specs: RouteSpecification, config: Config): Opera
         responses: {},
     };
 
-    if (specs.validate.output) {
-        schema.responses = getResponse(specs, config);
-    }
+    schema.responses = getResponses(specs, config);
 
     let parameters: ParameterObject[] = [];
     if (specs.validate.params) {
@@ -242,7 +232,7 @@ function processRoute(route: YupRouter, config: Config): PathsObject {
 }
 
 function createPaths(router: YupRouter | YupRouter[], config: Partial<Config> = {}): PathsObject {
-    const mergedConfig = { ...config, ...defaultConfig };
+    const mergedConfig = { ...defaultConfig, ...config };
     const routes = !Array.isArray(router) ? [router] : router;
 
     return routes.reduce(
