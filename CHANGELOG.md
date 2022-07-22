@@ -1,3 +1,9 @@
+## [2.2.2](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.1...v2.2.2) (2022-07-22)
+
+### Bug Fixes
+
+-   fix creating responses ([#21](https://github.com/rudi23/koa-yup-router-docs/issues/21)) ([9160e4d](https://github.com/rudi23/koa-yup-router-docs/commit/9160e4d7b1dd4705d5d3efb8e85bde9bad867329))
+
 ## [2.2.1](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.0...v2.2.1) (2022-07-21)
 
 ### Miscellaneous Chores
