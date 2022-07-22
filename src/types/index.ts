@@ -1,6 +1,6 @@
-import type { ResponsesObject } from 'openapi3-ts';
+import type { ValidateConfig } from '@rudi23/koa-yup-router';
 
 export type Config = {
     headRoutes: boolean;
-    defaultResponses: ResponsesObject;
+    defaultResponses: ValidateConfig['output'];
 };
