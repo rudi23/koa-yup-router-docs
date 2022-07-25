@@ -1,3 +1,14 @@
+## [2.2.3](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.2...v2.2.3) (2022-07-25)
+
+### Bug Fixes
+
+-   **deps:** update dependency @rudi23/koa-yup-router to v2.2.2 ([#25](https://github.com/rudi23/koa-yup-router-docs/issues/25)) ([f936a71](https://github.com/rudi23/koa-yup-router-docs/commit/f936a715ff3b712e9e9ffa3f7cc59f46f83d68bd))
+
+### Miscellaneous Chores
+
+-   **deps:** pin dependency @types/lodash.merge to 4.6.7 ([3ee5dc4](https://github.com/rudi23/koa-yup-router-docs/commit/3ee5dc4f94ec103596a737a30256fc8d999c3113))
+-   **deps:** update dependency release-it to v15.1.4 ([#24](https://github.com/rudi23/koa-yup-router-docs/issues/24)) ([9380525](https://github.com/rudi23/koa-yup-router-docs/commit/93805257917b3c9d751867ec9461021f830c6efc))
+
 ## [2.2.2](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.1...v2.2.2) (2022-07-22)
 
 ### Bug Fixes
