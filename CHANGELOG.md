@@ -1,3 +1,9 @@
+## [2.2.5](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.4...v2.2.5) (2022-07-28)
+
+### Miscellaneous Chores
+
+-   add @types/koa\_\_router dependency ([913254e](https://github.com/rudi23/koa-yup-router-docs/commit/913254e0a9946e740342905536c6436288f240a9))
+
 ## [2.2.4](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.3...v2.2.4) (2022-07-28)
 
 ### Miscellaneous Chores
