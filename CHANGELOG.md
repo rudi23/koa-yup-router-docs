@@ -1,3 +1,11 @@
+## [2.2.4](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.3...v2.2.4) (2022-07-28)
+
+### Miscellaneous Chores
+
+-   **deps:** update dependency release-it to v15.2.0 ([2e088cf](https://github.com/rudi23/koa-yup-router-docs/commit/2e088cf6bbdba384e2c3be181587e941dceea21d))
+-   **deps:** update linters to v5.31.0 ([0057637](https://github.com/rudi23/koa-yup-router-docs/commit/00576372a04bf5a13b605484658292e5dd6a5776))
+-   update @rudi23/koa-yup-router to v2.2.3 ([7bf8b03](https://github.com/rudi23/koa-yup-router-docs/commit/7bf8b030d720a9dbc2682958ed81a8c9df2f801c))
+
 Y## [2.2.3](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.2...v2.2.3) (2022-07-25)
 
 ### Bug Fixes
