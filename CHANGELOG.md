@@ -1,4 +1,4 @@
-## [2.2.3](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.2...v2.2.3) (2022-07-25)
+Y## [2.2.3](https://github.com/rudi23/koa-yup-router-docs/compare/v2.2.2...v2.2.3) (2022-07-25)
 
 ### Bug Fixes
 
