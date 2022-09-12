@@ -38,7 +38,7 @@ function getParameters(yupSchema: ValidationSchema, inPath: ParameterLocation): 
 
     return Object.entries(schemaObj.properties || {}).map(([name, props]) => {
         if (isSchemaObject(props)) {
-            const { description, title, ...restProps } = props;
+            const { description, ...restProps } = props;
 
             const fieldSchema: ParameterObject = {
                 name,
@@ -46,10 +46,6 @@ function getParameters(yupSchema: ValidationSchema, inPath: ParameterLocation): 
                 schema: restProps,
                 required: schemaObj.required?.includes(name),
             };
-
-            if (title) {
-                fieldSchema.title = title;
-            }
             if (description) {
                 fieldSchema.description = description;
             }
