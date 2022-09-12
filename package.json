@@ -68,7 +68,7 @@
     "@commitlint/config-conventional": "17.1.0",
     "@release-it/conventional-changelog": "5.1.0",
     "@types/jest": "28.1.8",
-    "@types/koa__router": "8.0.11",
+    "@types/koa__router": "12.0.0",
     "@types/lodash.merge": "4.6.7",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
