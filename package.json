@@ -57,11 +57,11 @@
     "*.{json,md}": "prettier --write"
   },
   "dependencies": {
-    "@rudi23/koa-yup-router": "2.2.4",
+    "@rudi23/koa-yup-router": "^2.3.0",
     "@rudi23/yup-to-openapi": "2.1.2",
     "lodash.merge": "4.6.2",
     "openapi3-ts": "2.0.2",
-    "yup": "0.32.11"
+    "yup": "1.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "17.6.6",
