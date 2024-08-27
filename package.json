@@ -60,7 +60,7 @@
     "@rudi23/koa-yup-router": "2.2.4",
     "@rudi23/yup-to-openapi": "2.1.2",
     "lodash.merge": "4.6.2",
-    "openapi3-ts": "2.0.2",
+    "openapi3-ts": "4.4.0",
     "yup": "0.32.11"
   },
   "devDependencies": {
